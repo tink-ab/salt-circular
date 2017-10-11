@@ -20,8 +20,8 @@ def main():
     data = data.values()[0]
 
     types_by_name = dict()
-    for k, v in data.items():
-        types_by_name[k] = types_by_name.get(k, []).append([k for k in v.keys() if not k.startswith('__')][0])
+    for k2, v in data.items():
+        types_by_name[k2] = types_by_name.get(k2, []) + [k for k in v.keys() if not k.startswith('__')]
 
     deps = list(flatten((dependencies(k, v, types_by_name) for k, v in data.items())))
     print "Found {0} state dependencies:".format(len(deps))
