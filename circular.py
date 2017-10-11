@@ -56,31 +56,32 @@ def main():
         print "No circular dependency found."
 
 
-def dependencies(statename, v, types_by_name):
+def dependencies(statename, states, types_by_name):
     """Generates (state, what_it_depends_on) list."""
-    statetype = [k for k in v.keys() if not k.startswith('__')][0]
-    data = v[statetype]
+    statetypes = [k for k in states.keys() if not k.startswith('__')]
+    for statetype in statetypes:
+        data = states[statetype]
 
-    # Extract all dependencies from this state.
-    for dataitem in data:
-        if isinstance(dataitem, dict):
-            assert len(dataitem)==1
-            if dataitem.keys()[0] in ('require', 'watch', 'onchanges', 'onfail'):
-                for dep in dataitem.values()[0]:
-                    if isinstance(dep, dict):
-                        for k, v in dep.items():
-                            yield ((statetype, statename), (k, v))
-                    else:
-                        for name in types_by_name.get(dep, []):
-                            yield ((statetype, statename), (name, dep))
-            if dataitem.keys()[0] in ('require_in', 'watch_in', 'prereq'):
-                for dep in dataitem.values()[0]:
-                    if isinstance(dep, dict):
-                        for k, v in dep.items():
-                            yield ((k, v), (statetype, statename))
-                    else:
-                        for name in types_by_name.get(dep, []):
-                            yield ((name, dep), (statetype, statename))
+        # Extract all dependencies from this state.
+        for dataitem in data:
+            if isinstance(dataitem, dict):
+                assert len(dataitem)==1
+                if dataitem.keys()[0] in ('require', 'watch', 'onchanges', 'onfail'):
+                    for dep in dataitem.values()[0]:
+                        if isinstance(dep, dict):
+                            for k, v in dep.items():
+                                yield ((statetype, statename), (k, v))
+                        else:
+                            for name in types_by_name.get(dep, []):
+                                yield ((statetype, statename), (name, dep))
+                if dataitem.keys()[0] in ('require_in', 'watch_in', 'prereq'):
+                    for dep in dataitem.values()[0]:
+                        if isinstance(dep, dict):
+                            for k, v in dep.items():
+                                yield ((k, v), (statetype, statename))
+                        else:
+                            for name in types_by_name.get(dep, []):
+                                yield ((name, dep), (statetype, statename))
 
 
 def flatten(listOfLists):
