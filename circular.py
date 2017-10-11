@@ -24,7 +24,8 @@ def main():
         types_by_name[k] = types_by_name.get(k, []).append([k for k in v.keys() if not k.startswith('__')][0])
 
     deps = list(flatten((dependencies(k, v, types_by_name) for k, v in data.items())))
-    print "Found {0} state dependencies:"
+    print "Found {0} state dependencies:".format(len(deps))
+    print
     for state, requisite in deps:
         print " * State {0} depends on state {1}.".format(state, requisite)
     print
