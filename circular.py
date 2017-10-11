@@ -65,7 +65,7 @@ def dependencies(statename, v, types_by_name):
     for dataitem in data:
         if isinstance(dataitem, dict):
             assert len(dataitem)==1
-            if dataitem.keys()[0] in ('require', 'watch', 'onchanges', 'onfail'):    # TODO: Add the other requisites here.
+            if dataitem.keys()[0] in ('require', 'watch', 'onchanges', 'onfail'):
                 for dep in dataitem.values()[0]:
                     if isinstance(dep, dict):
                         for k, v in dep.items():
@@ -73,7 +73,7 @@ def dependencies(statename, v, types_by_name):
                     else:
                         for name in types_by_name.get(dep, []):
                             yield ((statetype, statename), (name, dep))
-            if dataitem.keys()[0] in ('require_in', 'watch_in', 'prereq'):    # TODO: Add the other requisites here.
+            if dataitem.keys()[0] in ('require_in', 'watch_in', 'prereq'):
                 for dep in dataitem.values()[0]:
                     if isinstance(dep, dict):
                         for k, v in dep.items():
