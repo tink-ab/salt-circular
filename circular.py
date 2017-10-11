@@ -72,7 +72,8 @@ def dependencies(statename, states, types_by_name):
                             for k, v in dep.items():
                                 yield ((statetype, statename), (k, v))
                         else:
-                            for name in types_by_name.get(dep, []):
+                            # TODO: Catch KeyError here and write a nicer error that the name is missing.
+                            for name in types_by_name[dep]:
                                 yield ((statetype, statename), (name, dep))
                 if dataitem.keys()[0] in ('require_in', 'watch_in', 'prereq'):
                     for dep in dataitem.values()[0]:
@@ -80,7 +81,8 @@ def dependencies(statename, states, types_by_name):
                             for k, v in dep.items():
                                 yield ((k, v), (statetype, statename))
                         else:
-                            for name in types_by_name.get(dep, []):
+                            # TODO: Catch KeyError here and write a nicer error that the name is missing.
+                            for name in types_by_name[dep]:
                                 yield ((name, dep), (statetype, statename))
 
 
