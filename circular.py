@@ -50,7 +50,7 @@ def main():
     if deps:
         print "THERE WERE CIRCULAR DEPENDENCIES (AKA, you have a bad day!):"
         print
-        for dep in deps:
+        for dep in sorted(deps):
             print pretty_tuple(dep)
     else:
         print "No circular dependency found."
