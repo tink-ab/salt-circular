@@ -27,7 +27,7 @@ def main():
     print "Found {0} state dependencies:".format(len(deps))
     print
     for state, requisite in deps:
-        print " * State {0} depends on state {1}.".format(state, requisite)
+        print " * State {0} depends on state {1}.".format(pretty_tuple(state), pretty_tuple(requisite))
     print
 
     print "Searching for circular dependencies. Reducing until can't be reduced anymore..."
@@ -40,7 +40,7 @@ def main():
             break
 
         to_remove = iter(can_be_reduced).next()
-        print "Iteration: {0:>5}\tLeft to apply: {1:>5}\tService to 'apply': {2}".format(iteration, len(deps), to_remove)
+        print "Iteration: {0:>5}\tLeft to apply: {1:>5}\tService to 'apply': {2}".format(iteration, len(deps), pretty_tuple(to_remove))
         deps = [dep for dep in deps if to_remove not in dep]
 
         iteration += 1
@@ -51,7 +51,7 @@ def main():
         print "THERE WERE CIRCULAR DEPENDENCIES (AKA, you have a bad day!):"
         print
         for dep in deps:
-            print dep
+            print pretty_tuple(dep)
     else:
         print "No circular dependency found."
 
@@ -82,6 +82,10 @@ def dependencies(statename, states, types_by_name):
                         else:
                             for name in types_by_name.get(dep, []):
                                 yield ((name, dep), (statetype, statename))
+
+
+def pretty_tuple(t):
+    return "({0}, {1})".format(t[0], t[1])
 
 
 def flatten(listOfLists):
