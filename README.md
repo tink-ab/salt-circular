@@ -1,4 +1,5 @@
 SaltStack circular state dependency finder
+==========================================
 
 ```bash
 $ python circular.py                                                                                                                   [9:37:53]
