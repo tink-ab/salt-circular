@@ -2,7 +2,7 @@ SaltStack circular state dependency finder
 ==========================================
 
 ```bash
-$ python circular.py                                                                                                                   [9:37:53]
+$ python circular.py
 Usage: circular.py <jsonfile>
 
 Extract the json file using something like:
